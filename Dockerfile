@@ -1,8 +1,8 @@
 FROM golang:1.20-alpine AS builder
 WORKDIR /app
-COPY go.* .
-COPY cmd cmd
-COPY pkg pkg
+COPY go.* ./
+COPY cmd cmd/
+COPY pkg pkg/
 RUN go build -o firstbot FirstBot/cmd/firstbot
 
 FROM alpine:latest
