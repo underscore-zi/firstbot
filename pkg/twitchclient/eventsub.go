@@ -1,6 +1,6 @@
 package twitchclient
 
-import "FirstBot/pkg/eventsub"
+import "github.com/underscore-zi/firstbot/pkg/eventsub"
 
 // EventSubClient provides an eventsub.Client but you'll still need to call .Connect on it to start it
 // after the first call it always returns the same client instance

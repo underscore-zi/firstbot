@@ -1,12 +1,12 @@
 package main
 
 import (
-	"FirstBot/pkg/eventsub"
-	"FirstBot/pkg/eventsub/subscriptions"
-	"FirstBot/pkg/twitchclient"
 	"flag"
 	"fmt"
 	"github.com/sirupsen/logrus"
+	"github.com/underscore-zi/firstbot/pkg/eventsub"
+	"github.com/underscore-zi/firstbot/pkg/eventsub/subscriptions"
+	"github.com/underscore-zi/firstbot/pkg/twitchclient"
 	"strings"
 )
 

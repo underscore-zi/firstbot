@@ -1,4 +1,4 @@
-module FirstBot
+module github.com/underscore-zi/firstbot
 
 go 1.20
 

@@ -1,8 +1,8 @@
 package twitchclient
 
 import (
-	"FirstBot/pkg/eventsub"
 	"github.com/sirupsen/logrus"
+	"github.com/underscore-zi/firstbot/pkg/eventsub"
 	"net/http"
 	"time"
 )

@@ -1,8 +1,8 @@
 package subscriptions
 
 import (
-	"FirstBot/pkg/eventsub"
 	"github.com/sirupsen/logrus"
+	"github.com/underscore-zi/firstbot/pkg/eventsub"
 )
 
 // OnSubscribed is a simple implementation of the SubscriptionHandler's OnSubscribed method that can be called in-place
