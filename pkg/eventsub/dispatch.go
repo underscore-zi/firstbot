@@ -100,6 +100,6 @@ func (c *Client) dispatch(msg WebsocketMessage) {
 
 	// Every message should reset the timer
 	if c.session != nil && c.session.KeepaliveTimeoutSeconds > 0 {
-		c.keepaliveTicker.Reset(time.Duration(c.session.KeepaliveTimeoutSeconds) * time.Second)
+		c.keepaliveTicker.Reset(time.Duration(c.session.KeepaliveTimeoutSeconds) * time.Second * 2)
 	}
 }
