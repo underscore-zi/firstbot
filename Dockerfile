@@ -3,7 +3,7 @@ WORKDIR /app
 COPY go.* ./
 COPY cmd cmd/
 COPY pkg pkg/
-RUN go build -o firstbot FirstBot/cmd/firstbot
+RUN go build -o firstbot github.com/underscore-zi/firstbot/cmd/firstbot
 
 FROM alpine:latest
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
