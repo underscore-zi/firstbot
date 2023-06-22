@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gempir/go-twitch-irc/v4"
+	twitch "github.com/gempir/go-twitch-irc/v4"
 	"strings"
 )
 
