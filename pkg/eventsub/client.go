@@ -54,8 +54,6 @@ func (c *Client) Connect() (*websocket.Conn, *http.Response, error) {
 }
 
 func (c *Client) reader() {
-	//defer func() { c.logger.Info("Reader closed") }()
-	//c.logger.Info("reader started")
 	for {
 		if c.conn == nil {
 			return

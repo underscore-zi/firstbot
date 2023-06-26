@@ -6,15 +6,29 @@ import (
 	"time"
 )
 
-func (c *Client) startWatchdog() {
-	go c.watchdog()
+func (c *Client) watchdogTriggered() {
+	c.logger.Info("watchdog closed, attempting reconnection")
+	maxSeconds := 15 * 60
+
+	for i := 0; ; i++ {
+		c.once = sync.Once{}
+		_, _, err := c.Connect()
+		if err == nil {
+			break
+		}
+
+		dur := (i + 1) * (i + 1)
+		if dur > maxSeconds {
+			dur = maxSeconds
+		}
+
+		c.logger.WithError(err).WithField("duration", dur).Error("Failed to reconnect, retrying")
+		time.Sleep(time.Second * time.Duration(dur))
+	}
 }
 
 func (c *Client) watchdog() {
-	defer func() {
-		c.logger.Info("watchdog closed")
-		c.once = sync.Once{} // allows it to be restarted again
-	}()
+	defer c.watchdogTriggered()
 
 	for {
 		select {
