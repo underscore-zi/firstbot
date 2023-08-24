@@ -2,29 +2,13 @@ package eventsub
 
 import (
 	"github.com/sirupsen/logrus"
-	"sync"
+	"os"
 	"time"
 )
 
 func (c *Client) watchdogTriggered() {
-	c.logger.Info("watchdog closed, attempting reconnection")
-	maxSeconds := 15 * 60
-
-	for i := 0; ; i++ {
-		c.once = sync.Once{}
-		_, _, err := c.Connect()
-		if err == nil {
-			break
-		}
-
-		dur := (i + 1) * (i + 1)
-		if dur > maxSeconds {
-			dur = maxSeconds
-		}
-
-		c.logger.WithError(err).WithField("duration", dur).Error("Failed to reconnect, retrying")
-		time.Sleep(time.Second * time.Duration(dur))
-	}
+	c.logger.Info("watchdog closed, restarting")
+	os.Exit(0)
 }
 
 func (c *Client) watchdog() {
