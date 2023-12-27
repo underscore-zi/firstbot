@@ -5,11 +5,13 @@ import (
 	"github.com/underscore-zi/firstbot/pkg/eventsub"
 )
 
+type EventCallback func(event eventsub.Event)
+
 type StreamOnline struct {
 	EventSub  *eventsub.Client
 	Logger    *logrus.Logger
 	ChannelID string
-	Callback  func(eventsub.Event)
+	Callback  EventCallback
 }
 
 func (s StreamOnline) OnSubscribed(sub eventsub.Subscription) {

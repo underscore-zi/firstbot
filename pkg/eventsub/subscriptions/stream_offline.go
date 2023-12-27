@@ -9,7 +9,7 @@ type StreamOffline struct {
 	EventSub  *eventsub.Client
 	Logger    *logrus.Logger
 	ChannelID string
-	Callback  func(eventsub.Event)
+	Callback  EventCallback
 }
 
 func (s StreamOffline) OnSubscribed(sub eventsub.Subscription) {
