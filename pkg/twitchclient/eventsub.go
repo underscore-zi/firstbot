@@ -10,7 +10,7 @@ func (c *Client) EventSubClient() *eventsub.Client {
 			TwitchClientID:    c.ClientID,
 			TwitchAccessToken: c.AccessToken,
 			SocketURL:         eventsub.SocketURL,
-			SubcriptionURL:    eventsub.SubscriptionURL,
+			SubscriptionURL:   eventsub.SubscriptionURL,
 		})
 	}
 	return c.eventsubClient

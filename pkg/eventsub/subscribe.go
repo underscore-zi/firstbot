@@ -50,7 +50,7 @@ func (c *Client) Subscribe(subscriptionType, version string, condition map[strin
 		c.logger.WithError(err).Error("Failed to encode subscription request")
 	}
 
-	req, err := http.NewRequest("POST", c.SubcriptionURL, &buf)
+	req, err := http.NewRequest("POST", c.SubscriptionURL, &buf)
 	if err != nil {
 		c.logger.WithError(err).Error("Failed to create subscription request")
 		return err

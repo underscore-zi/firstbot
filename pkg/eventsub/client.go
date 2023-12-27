@@ -43,7 +43,7 @@ type Config struct {
 	TwitchClientID    string
 	TwitchAccessToken string
 	SocketURL         string
-	SubcriptionURL    string
+	SubscriptionURL   string
 }
 
 func (c *Client) Connect() (*websocket.Conn, *http.Response, error) {
@@ -96,7 +96,7 @@ func (c *Client) Close() error {
 
 func (c *Client) ListSubscriptions() ([]Subscription, error) {
 	hClient := http.Client{}
-	req, err := http.NewRequest("GET", c.SubcriptionURL, nil)
+	req, err := http.NewRequest("GET", c.SubscriptionURL, nil)
 	if err != nil {
 		c.logger.WithError(err).Error("Failed to create subscription list request")
 		return nil, err
