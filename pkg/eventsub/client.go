@@ -2,6 +2,7 @@ package eventsub
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 
 var SocketURL = "wss://eventsub.wss.twitch.tv/ws"
 var SubscriptionURL = "https://api.twitch.tv/helix/eventsub/subscriptions"
+var DebugLog = ""
 
 func init() {
 	if v, found := os.LookupEnv("EVENTSUB_SOCKET_URL"); found {
@@ -20,6 +22,10 @@ func init() {
 
 	if v, found := os.LookupEnv("EVENTSUB_SUBSCRIPTION_URL"); found {
 		SubscriptionURL = v
+	}
+
+	if v, found := os.LookupEnv("DEBUG_LOG"); found {
+		DebugLog = v
 	}
 }
 
@@ -47,6 +53,7 @@ func (c *Client) Connect() (*websocket.Conn, *http.Response, error) {
 		c.conn = conn
 	}
 
+	c.Debug("Connected to %s", c.SocketURL)
 	c.once.Do(func() { go c.watchdog() })
 	go c.reader()
 
@@ -71,6 +78,8 @@ func (c *Client) reader() {
 				c.logger.WithError(err).Error("Failed to parse message from twitch")
 				continue
 			}
+
+			c.Debug("%s", string(message))
 			go c.dispatch(parsed)
 		default:
 			c.logger.WithField("type", messageType).Error("Unhandled message type")
@@ -79,6 +88,7 @@ func (c *Client) reader() {
 }
 
 func (c *Client) Close() error {
+	c.Debug("Closing connection")
 	err := c.conn.Close()
 	c.conn = nil
 	return err
@@ -129,4 +139,14 @@ func NewClient(config Config) *Client {
 	c.keepaliveTicker.Stop()
 
 	return c
+}
+
+func (c *Client) Debug(format string, args ...interface{}) {
+	if DebugLog == "" {
+		return
+	}
+	if fp, err := os.OpenFile(DebugLog, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644); err == nil {
+		_, _ = fp.WriteString(fmt.Sprintf(format, args...) + "\n")
+		_ = fp.Close()
+	}
 }
