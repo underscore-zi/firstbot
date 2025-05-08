@@ -146,7 +146,8 @@ func main() {
 				}
 			}
 
-			if msg.User.Name == "underscorezi" {
+			sender := strings.ToLower(msg.User.Name)
+			if sender == "underscorezi" || sender == strings.ToLower(config.Chat.Channel) {
 				if firstWord == "!forceoffline" {
 					go func() { streamState <- false }()
 				} else if firstWord == "!forceonline" {
