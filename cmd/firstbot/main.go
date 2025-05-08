@@ -144,6 +144,36 @@ func main() {
 				case ErrNotLive:
 					chatSend <- fmt.Sprintf("Nice try @%s but the stream is not live yet!", msg.User.Name)
 				}
+			} else if firstWord == "!spot" {
+				claims := state.AllClaims()
+				count := len(claims)
+
+				if len(claims) > 0 {
+					found := false
+					for i, user := range claims {
+						if user == msg.User.Name {
+							chatSend <- fmt.Sprintf("@%s You are in spot #%d of %d ", msg.User.Name, i+1, count)
+							found = true
+							break
+						}
+					}
+					if !found {
+						chatSend <- fmt.Sprintf("@%s You have not yet claimed your spot! Next up is spot #%d. ", msg.User.Name, len(claims)+1)
+					}
+				} else {
+					chatSend <- fmt.Sprintf("@%s You have not yet claimed your spot! First is still up to be claimed! ", msg.User.Name)
+				}
+			} else if strings.HasPrefix(firstWord, "!") {
+				switch err, pos := state.TryLateClaim(msg.User.Name, firstWord[1:]); err {
+				case nil:
+					chatSend <- fmt.Sprintf("Congrats @%s! You got !%s", msg.User.Name, firstWord[1:])
+				case ErrNotLive:
+					chatSend <- fmt.Sprintf("Nice try but no one has claimed !first yet")
+				case ErrAlreadyClaimed:
+					chatSend <- fmt.Sprintf("Nice try @%s but you already claimed spot #%d", msg.User.Name, pos)
+				case ErrIncorrectOrdinal:
+					// don't do anything since this might not even be an attempt
+				}
 			}
 
 			sender := strings.ToLower(msg.User.Name)
