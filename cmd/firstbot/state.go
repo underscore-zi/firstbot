@@ -71,6 +71,7 @@ func (s *State) SetOnline() {
 	if !s.raw.IsLive {
 		s.raw.IsLive = true
 		s.raw.IsClaimed = false
+		s.raw.LateClaims = nil
 	}
 }
 
